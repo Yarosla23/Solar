@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pozdravok.Models;
 
-namespace Pozdravok.Views
+namespace Pozdravok.Controllers
 {
     public class PeopleController : Controller
     {
@@ -53,15 +53,23 @@ namespace Pozdravok.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Photo,BirthDate,Note")] People people)
+        public async Task<IActionResult> Create(People people, IFormFile Photo)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(people);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (Photo != null && Photo.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    Photo.CopyTo(memoryStream);
+                    people.Photo = memoryStream.ToArray();
+                }
             }
-            return View(people);
+            _context.Birthdays.Add(people);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }    return View(people);
         }
 
         // GET: People/Edit/5

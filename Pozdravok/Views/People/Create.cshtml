@@ -10,11 +10,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input type="text" id="Name" name="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -24,8 +24,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
-              
+                <input type="file" id="Photo" name="Photo" class="form-control-file" accept=".jpg,.jpeg,.png" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="BirthDate" class="control-label"></label>
@@ -35,6 +35,7 @@
             <div class="form-group">
                 <label asp-for="Note" class="control-label"></label>
                 <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
