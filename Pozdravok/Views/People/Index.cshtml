@@ -3,64 +3,102 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+h3 {
+    font-size: 24px;
+    color: red;
+    font-weight: bold;
+    }
+ </style>
 
-<h1>Index</h1>
+<h1>Все дни рождения</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
-</p>
+    <a asp-action="Create">Create New</a> 
+    </p>
+@if (Model.Any()) { 
+<form asp-action="Sort" method="post" class="my-form">
+    <div class="form-group">
+        <label for="sortOrder">Сортировать по:</label>
+        <select id="sortOrder" name="sortOrder" class="form-control">
+            <option value="">Выберите...</option>
+            <option value="name">Имени (возрастание)</option>
+            <option value="name_desc">Имени (убывание)</option>
+            <option value="Surname">Фамилии (возрастание)</option>
+            <option value="surname_desc">Фамилии (убывание)</option>
+            <option value="BirthDate">Дате рождения (возрастание)</option>
+            <option value="birthdate_desc">Дате рождения (убывание)</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Применить сортировку</button>
+    </form>
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Surname)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.BirthDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Note)
             </th>
-            <th></th>
+            <th>
+                <span>Параметры</span>
+             </th>
+            
         </tr>
+
+        
     </thead>
     <tbody>
+
 @foreach (var item in Model) {
-        <tr>
+                <tr>
+                    
+                <td>
+                    @if (item.Photo != null && item.Photo.Length > 0)
+                    {
+                        <img src="data:image/jpeg/png;base64,@Convert.ToBase64String(item.Photo)" alt="@item.Photo" width="100" height="120" />
+                    }
+                    else
+                    {
+                        <p>Упс... нет фотографии.</p>
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Surname)
             </td>
-            <td>
-                    @if (item.Photo != null && item.Photo.Length > 0)
-                    {
-                        <img src="data:image/jpeg/png;base64,@Convert.ToBase64String(item.Photo)" alt="@item.Photo" width="100" height="100" />
-                    }
-                    else
-                    {
-                        <span>No photo</span>
-                    }
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
+                    </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }
-    </tbody>
+        </tbody>
 </table>
+}
+        else
+        {
+        <h3>Ничего нет, вперед добавлять День Рождения!.</h3>
+        }
